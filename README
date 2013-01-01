@@ -1,0 +1,67 @@
+Check link below to find more details:
+    http://stackoverflow.com/questions/14110587/why-the-smart-pointer-auto-ptr-cannot-be-referenced-at-that-time#14110617
+
+
+if we comment out it:
+    // ptr1->myFunc();//取消注释会发生段错误或未定义结果
+
+    $ ./a.out 
+    myFunc() done.  1
+    myFunc() done.  2
+    test 1 done
+
+    This class has been destroied.  2
+    myFunc() done.  1
+    test 2 done
+
+    myFunc() done.  1
+    This class has been destroied.  1
+    myFunc() done.  3
+    myFunc() done.  0
+    test 3 done
+
+    This class has been destroied.  3
+
+
+
+
+
+if we do not comment out it:
+    ptr1->myFunc();//取消注释会发生段错误或未定义结果
+
+    $ ./a.out 
+    myFunc() done.  1
+    myFunc() done.  2
+    test 1 done
+
+    This class has been destroied.  2
+    myFunc() done.  1
+    Segmentation fault (core dumped)
+
+
+
+Compile if unique_ptr is applied:
+    $ g++ -std=c++0x test_auto_ptr.cpp 
+    test_auto_ptr.cpp: In function ‘int main()’:
+    test_auto_ptr.cpp:28:26: warning: ‘auto_ptr’ is deprecated (declared at /usr/include/c++/4.6/backward/auto_ptr.h:87) [-Wdeprecated-declarations]
+
+
+Run result:
+    $ ./a.out 
+    myFunc() done.  1
+    myFunc() done.  2
+    test 1 done
+
+    This class has been destroied.  2
+    myFunc() done.  1
+    test 2 done
+
+    myFunc() done.  1
+    This class has been destroied.  1
+    myFunc() done.  3
+    myFunc() done.  0
+    test 3 done
+
+    This class has been destroied.  44
+    This class has been destroied.  3
+    This class has been destroied.  33

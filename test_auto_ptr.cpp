@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <iostream>
+#include <assert.h>
 
 using namespace std;
 class MyClass
@@ -22,6 +23,7 @@ public:
 
 int main()
 {
+    unique_ptr<MyClass> ptr3(new MyClass(33)), ptr4(new MyClass(44));
     auto_ptr<MyClass> ptr1(new MyClass(1));
     auto_ptr<MyClass>ptr2(new MyClass(2));
     ptr1->myFunc();
@@ -39,42 +41,9 @@ int main()
     ptr2->myFunc();
     ptr->myFunc(); //此处会产生未定义的结果
     cout<<"test 3 done\n"<<endl;
+
+    ptr4 = std::move(ptr3);  // now it's clear that ptr1 is no longer usable
+    assert(!ptr3);
+
     return 0;   // then ptr2(3) will be destroied
 }
-/*
-Check link below to find more details:
-    http://stackoverflow.com/questions/14110587/why-the-smart-pointer-auto-ptr-cannot-be-referenced-at-that-time#14110617
-
-
-if we comment out it:
-    // ptr1->myFunc();//取消注释会发生段错误或未定义结果
-$ ./a.out 
-myFunc() done.  1
-myFunc() done.  2
-test 1 done
-
-This class has been destroied.  2
-myFunc() done.  1
-test 2 done
-
-myFunc() done.  1
-This class has been destroied.  1
-myFunc() done.  3
-myFunc() done.  0
-test 3 done
-
-This class has been destroied.  3
-
-
-
-if we do not comment out it:
-    ptr1->myFunc();//取消注释会发生段错误或未定义结果
-$ ./a.out 
-myFunc() done.  1
-myFunc() done.  2
-test 1 done
-
-This class has been destroied.  2
-myFunc() done.  1
-Segmentation fault (core dumped)
- * */
