@@ -42,6 +42,10 @@ int main()
     return 0;   // then ptr2(3) will be destroied
 }
 /*
+Check link below to find more details:
+    http://stackoverflow.com/questions/14110587/why-the-smart-pointer-auto-ptr-cannot-be-referenced-at-that-time#14110617
+
+
 if we comment out it:
     // ptr1->myFunc();//取消注释会发生段错误或未定义结果
 $ ./a.out 
@@ -73,5 +77,4 @@ test 1 done
 This class has been destroied.  2
 myFunc() done.  1
 Segmentation fault (core dumped)
-
  * */
